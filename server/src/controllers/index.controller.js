@@ -82,7 +82,7 @@ const updateIngredient = async(req, res) => {
 const deletePlate = async(req, res) => {
     const id = req.params.id;
 
-    const response = pool.query('UPDATE plate SET active = FALSE WHERE pk_idplate = $1', [id]);
+    const response = await pool.query('UPDATE plate SET active = FALSE WHERE pk_idplate = $1', [id]);
 
     res.json({
         message: 'Plato Eliminado'
@@ -92,13 +92,20 @@ const deletePlate = async(req, res) => {
 const deleteIngredient = async(req, res) => {
     const id = req.params.id;
 
-    const response = pool.query('UPDATE ingredient SET active = FALSE WHERE pk_idingredient = $1', [id]);
+    const response = await pool.query('UPDATE ingredient SET active = FALSE WHERE pk_idingredient = $1', [id]);
 
     res.json({
         message: 'Ingrediente Eliminado'
     });
 };
 
+const getIngredientsByPlate = async(req, res) => {
+    const id = req.params.id;
+
+    const response = await pool.query('SELECT PK_idIngredient, ingredientName, description FROM Ingredient WHERE PK_idIngredient IN (SELECT FK_idIngredient FROM Plate_Ingredients WHERE FK_idPlate = $1)', [id]);
+
+    res.json(response.rows)
+}
 
 module.exports = {
     getRestaurantPlates,
@@ -110,5 +117,6 @@ module.exports = {
     updatePlate,
     updateIngredient,
     deletePlate,
-    deleteIngredient
+    deleteIngredient,
+    getIngredientsByPlate
 }
