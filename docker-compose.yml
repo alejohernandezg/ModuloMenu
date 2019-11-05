@@ -1,0 +1,27 @@
+version: '3' # specify docker-compose version
+
+# Define the services/containers to be run
+services:
+  angular:
+    build: Front-end # specify the directory of the Dockerfile
+    ports:
+      - "4200:4200" # specify port forewarding
+    volumes:
+      - ./volumes:/angular
+  app:
+    build: server # specify the directory of the Dockerfile
+    depends_on:
+      - database
+    ports:
+      - "3000:3000" #specify ports forewarding
+      - "9229:9229"
+
+  database:
+    image: postgres:11.2-alpine # specify image to build container from
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432" 
+    volumes:
+      - ./volumes:/postgres
+    
