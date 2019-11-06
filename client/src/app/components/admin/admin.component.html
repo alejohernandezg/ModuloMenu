@@ -1,116 +1,26 @@
 <div class="admin">
-    <div class="ui vertical stripe segment">
-        <h1>Administracion de Platos</h1>
+    <div class="ui vertical stripe segment " style="margin-top:2em">
+        <h1>Platos Fuertes</h1>
     </div>
 
-
-    <div class="ui vertical stripe segment">
-        <div class="ui equal width stackable internally celled grid">
-            <div class="center aligned row">
-                <div class="column">
-                    <h3>Basico</h3>
-                    <div class="ui segments">
-                        <div class="ui secondary segment">
-                            <button class="ui positive basic button fluid">Agregar</button>
-                        </div>
-                        <div class="ui segment">
-                            <div class="ui three cards">
-                                <div class="ui card">
-                                    <div class="content">
-                                        <div class="header">Sal</div>
-                                        <div class="description">
-                                            Elliot Fu is a film-maker from New York.
-                                        </div>
-                                    </div>
-                                    <div class="extra content">
-                                        <div class="ui two buttons">
-                                            <div class="ui basic green button"><i class="edit icon"></i></div>
-                                            <div class="ui basic red button"><i class="trash icon"></i></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="content">
-                                        <div class="header">Pimienta</div>
-                                        <div class="description">
-                                            Veronika Ossi is a set designer living in New York who enjoys kittens, music, and partying.
-                                        </div>
-                                    </div>
-                                    <div class="extra content">
-                                        <div class="ui two buttons">
-                                            <div class="ui basic green button"><i class="edit icon"></i></div>
-                                            <div class="ui basic red button"><i class="trash icon"></i></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="content">
-                                        <div class="header">Arroz</div>
-                                        <div class="description">
-                                            Jenny is a student studying Media Management at the New School
-                                        </div>
-                                    </div>
-                                    <div class="extra content">
-                                        <div class="ui two buttons">
-                                            <div class="ui basic green button"><i class="edit icon"></i></div>
-                                            <div class="ui basic red button"><i class="trash icon"></i></div>
-                                        </div>
-                                    </div>
-                                </div>
+    <div class="ui vertical stripe segment " style="margin-top:2em">
+        <div class="ui segments">
+            <div class="ui secondary segment">
+                <button class="ui positive basic button fluid">Agregar</button>
+            </div>
+            <div class="ui segment">
+                <div class="ui three cards">
+                    <div class="card" *ngFor="let ingrediente of listIngredientes">
+                        <div class="content">
+                            <div class="header">{{ ingrediente.ingredientname }}</div>
+                            <div class="description">
+                                {{ ingrediente.description }}
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="column">
-                    <h3>Adiciones</h3>
-                    <div class="ui segments">
-                        <div class="ui secondary segment">
-                            <button class="ui positive basic button fluid">Agregar</button>
-                        </div>
-                        <div class="ui segment">
-                            <div class="ui three cards">
-                                <div class="card">
-                                    <div class="content">
-                                        <div class="header">Tocineta</div>
-                                        <div class="description">
-                                            Elliot Fu is a film-maker from New York.
-                                        </div>
-                                    </div>
-                                    <div class="extra content">
-                                        <div class="ui two buttons">
-                                            <div class="ui basic green button"><i class="edit icon"></i></div>
-                                            <div class="ui basic red button"><i class="trash icon"></i></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="content">
-                                        <div class="header">Salsa de Champiñones</div>
-                                        <div class="description">
-                                            Veronika Ossi is a set designer living in New York who enjoys kittens, music, and partying.
-                                        </div>
-                                    </div>
-                                    <div class="extra content">
-                                        <div class="ui two buttons">
-                                            <div class="ui basic green button"><i class="edit icon"></i></div>
-                                            <div class="ui basic red button"><i class="trash icon"></i></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="content">
-                                        <div class="header">Termino</div>
-                                        <div class="description">
-                                            Jenny is a student studying Media Management at the New School
-                                        </div>
-                                    </div>
-                                    <div class="extra content">
-                                        <div class="ui two buttons">
-                                            <div class="ui basic green button"><i class="edit icon"></i></div>
-                                            <div class="ui basic red button"><i class="trash icon"></i></div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="extra content">
+                            <div class="ui two buttons">
+                                <button (click)="abrirModal(ingrediente.pk_idingredient-1, 1)" class="ui basic green button"><i class="edit icon"></i></button>
+                                <div class="ui basic red button"><i class="trash icon"></i></div>
                             </div>
                         </div>
                     </div>
@@ -130,50 +40,11 @@
             </div>
             <div class="ui segment">
                 <div class="ui three cards">
-                    <div class="card">
+                    <div class="card" *ngFor="let plato of listPlatos">
                         <div class="content">
-                            <div class="header">Plato 1</div>
+                            <div class="header">{{plato.platename}}</div>
                             <div class="description">
-                                Elliot Fu is a film-maker from New York.
-                            </div>
-                        </div>
-                        <div class="extra content">
-                            <div class="center aligned author">
-                                <img class="ui avatar image" src="https://semantic-ui.com/images/avatar/small/jenny.jpg"> Jenny
-                            </div>
-                        </div>
-                        <div class="extra content">
-                            <div class="ui two buttons">
-                                <div class="ui basic green button"><i class="edit icon"></i></div>
-                                <div class="ui basic red button"><i class="trash icon"></i></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="content">
-                            <div class="header">Plato 2</div>
-                            <div class="description">
-                                Veronika Ossi is a set designer living in New York who enjoys kittens, music, and partying.
-                            </div>
-                        </div>
-                        <div class="extra content">
-                            <div class="center aligned author">
-                                <img class="ui avatar image" src="https://semantic-ui.com/images/avatar/small/jenny.jpg"> Jenny
-                            </div>
-                        </div>
-                        <div class="extra content">
-                            <div class="ui two buttons">
-                                <div class="ui basic green button"><i class="edit icon"></i></div>
-                                <div class="ui basic red button"><i class="trash icon"></i></div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="card">
-                        <div class="content">
-                            <div class="header">Plato 3</div>
-                            <div class="description">
-                                Jenny is a student studying Media Management at the New School
+                                {{ plato.platedescription }}
                             </div>
                         </div>
                         <div class="extra content">
@@ -193,3 +64,13 @@
         </div>
     </div>
 </div>
+<sui-modal *ngIf="show" [isClosable]="true" (dismissed)="show = false" #modal>
+    <div class="header">{{ actualPlato.platename || actualIngrediente.ingredientname }}</div>
+    <div class="scrolling content">
+        <p> This is Test Content</p>
+    </div>
+    <div class="actions">
+        <button class="ui red button" (click)="modal.deny()">Cancel</button>
+        <button class="ui green button" (click)="modal.approve('done')" autofocus>OK</button>
+    </div>
+</sui-modal>
