@@ -102,7 +102,7 @@ const deleteIngredient = async(req, res) => {
 const getIngredientsByPlate = async(req, res) => {
     const id = req.params.id;
 
-    const response = await pool.query('SELECT PK_idIngredient, ingredientName, description FROM Ingredient WHERE PK_idIngredient IN (SELECT FK_idIngredient FROM Plate_Ingredients WHERE FK_idPlate = $1)', [id]);
+    const response = await pool.query('SELECT PK_idIngredient, ingredientName, description, active FROM Ingredient WHERE PK_idIngredient IN (SELECT FK_idIngredient FROM Plate_Ingredients WHERE FK_idPlate = $1)', [id]);
 
     res.json(response.rows)
 }
