@@ -3,7 +3,9 @@ version: '3' # specify docker-compose version
 # Define the services/containers to be run
 services:
   angular: # name of the first service
-    build: client # specify the directory of the Dockerfile
+    build:
+        context: ./client
+        dockerfile: Dockerfile  # specify the directory of the Dockerfile
     image: angular-resvit
     ports:
       - "4200:4200" # specify port forewarding
@@ -11,7 +13,9 @@ services:
       - ./client:/usr/src/app
 
   express: #name of the second service
-    build: server # specify the directory of the Dockerfile
+    build: 
+        context: ./server
+        dockerfile: Dockerfil # specify the directory of the Dockerfile
     image: node-resvit
     ports:
       - "3000:3000" #specify ports forewarding
