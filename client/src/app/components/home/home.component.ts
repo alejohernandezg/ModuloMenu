@@ -80,7 +80,7 @@ export class HomeComponent implements OnInit {
   public animate1In(transitionName: string = 'scale') {
 
     this.transitionController1.animate(
-        new Transition(transitionName, 2000, TransitionDirection.In, () => {})
+        new Transition(transitionName, 500, TransitionDirection.In, () => {})
     );
   }
 
@@ -94,7 +94,7 @@ export class HomeComponent implements OnInit {
   public animate2In(transitionName: string = 'scale') {
 
     this.transitionController2.animate(
-      new Transition(transitionName, 2000, TransitionDirection.In, () => {})
+      new Transition(transitionName, 500, TransitionDirection.In, () => {})
     );
   }
 
@@ -107,7 +107,7 @@ export class HomeComponent implements OnInit {
 
   public animate3In(transitionName: string = 'scale') {
     this.transitionController3.animate(
-      new Transition(transitionName, 2000, TransitionDirection.In, () => {} )
+      new Transition(transitionName, 500, TransitionDirection.In, () => {} )
     );
   }
 
