@@ -31,12 +31,12 @@ const  getPlatesType = async (req, res) => {
 };
 
 const createPlate = async (req, res) => {
-    const { FK_idTypePlate, FK_idRestaurant, plateName, plateDescription, amount, ingredients, imageplate} = req.body;
-    const response1 = await pool.query('INSERT INTO plate (FK_idTypePlate, FK_idRestaurant, plateName, plateDescription, amount,imageplate) VALUES ($1, $2, $3, $4, $5, $6)', [FK_idTypePlate,FK_idRestaurant,plateName, plateDescription, amount,imageplate]);
-    const idPlato = await pool.query('SELECT pk_idplate from plate WHERE FK_idRestaurant = $1 AND plateName = $2', [FK_idRestaurant,plateName]);
+    const { fk_idTypePlate, fk_idRestaurant, plateName, plateDescription, amount, ingredients, imageplate} = req.body;
+    const response1 = await pool.query('INSERT INTO plate (FK_idTypePlate, FK_idRestaurant, plateName, plateDescription, amount,imageplate) VALUES ($1, $2, $3, $4, $5, $6)', [fk_idTypePlate,fk_idRestaurant,plateName, plateDescription, amount,imageplate]);
+    const idPlato = await pool.query('SELECT pk_idplate from plate WHERE FK_idRestaurant = $1 AND plateName = $2', [fk_idRestaurant,plateName]);
     
     for(var i = 0; i < ingredients.length; i++){
-        const response2 = await pool.query('INSERT INTO Plate_Ingredients (FK_idPlate, FK_idIngredient) VALUES ($1, $2)', [idPlato.rows[0].pk_idplate, ingredients[i].pk_idingredient]);
+        const response2 = await pool.query('INSERT INTO Plate_Ingredients (FK_idPlate, FK_idIngredient) VALUES ($1, $2)', [idPlato.rows[0].pk_idplate, ingredients[i]]);
     };
 
     res.json({
@@ -57,11 +57,11 @@ const createIngredient = async(req, res) => {
 
 const updatePlate = async(req, res) => {
     const id = req.params.id;
-    const { fk_idtypeplate, fk_idrestaurant, platename, platedescription, amount, ingredients,imageplate} = req.body;
-    const response1 = await pool.query('UPDATE plate SET FK_idTypePlate = $1, FK_idRestaurant = $2, plateName = $3, plateDescription = $4, amount = $5, imageplate = $7 WHERE pk_idplate = $6',[fk_idtypeplate, fk_idrestaurant, platename, platedescription, amount, id, imageplate]);
+    const { fk_idtypeplate, platename, platedescription, amount, ingredients,imageplate, activo} = req.body;
+    const response1 = await pool.query('UPDATE plate SET FK_idTypePlate = $1, plateName = $2, plateDescription = $3, amount = $4, imageplate = $6, active= $7 WHERE pk_idplate = $5',[fk_idtypeplate, platename, platedescription, amount, id, imageplate, activo]);
     const response2 = await pool.query('DELETE FROM Plate_Ingredients WHERE FK_idPlate = $1', [id]);
     for(var i = 0; i < ingredients.length; i++){
-        const response2 = await pool.query('INSERT INTO Plate_Ingredients (FK_idPlate, FK_idIngredient) VALUES ($1, $2)', [id, ingredients[i].pk_idingredient]);
+        const response2 = await pool.query('INSERT INTO Plate_Ingredients (FK_idPlate, FK_idIngredient) VALUES ($1, $2)', [id, ingredients[i]]);
     };
     res.json({
         message: 'Plato modificado'
