@@ -6,7 +6,7 @@ CREATE TABLE Ingredient (
     PK_idIngredient SERIAL  NOT NULL,
     ingredientName varchar(50)  NOT NULL,
     description varchar(100)  NOT NULL,
-    active BOOLEAN NOT NULL  DEFAULT TRUE,
+    active BOOLEAN  NULL  DEFAULT TRUE,
     CONSTRAINT Ingredientes_pk PRIMARY KEY (PK_idIngredient)
 );
 
@@ -18,7 +18,7 @@ CREATE TABLE Plate (
     plateName varchar(50)  NOT NULL,
     plateDescription varchar(200)  NOT NULL,
     amount int  NOT NULL,
-    active BOOLEAN NOT NULL DEFAULT TRUE,
+    active BOOLEAN NULL DEFAULT TRUE,
     imagePlate VARCHAR(200) NULL,
     CONSTRAINT Platos_pk PRIMARY KEY (PK_idPlate)
 );
