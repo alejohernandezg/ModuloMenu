@@ -31,15 +31,16 @@ export class IngredienteService {
   }
 
   public crearIngrediente(ingrediente: Ingrediente) {
-    const URL = `http://localhost:3000/menu/ingredient?
-    pk_idingredient=${ingrediente.pk_idingredient}&
-    ingredientname=${ingrediente.ingredientname}&
-    description=${ingrediente.description}&
-    active=${ingrediente.active}`;
+    const URL = `http://localhost:3000/menu/ingredient`;
+    const tempIngredienteNuevo = {
+      ingredientname : ingrediente.ingredientname,
+      description: ingrediente.description,
+      active: ingrediente.active}
+    ;
     this.httpHeaders = new HttpHeaders()
     .set('Accept', '*/*');
     return this.http.post(
-      URL, { headers: this.httpHeaders }
+      URL, tempIngredienteNuevo, { headers: this.httpHeaders }
       ).toPromise();
   }
 
@@ -54,10 +55,17 @@ export class IngredienteService {
 
   public actualizarIngrediente(id: number, ingrediente: Ingrediente) {
     const URL = `http://localhost:3000/menu/ingredient/${id}`;
+    const ingrdnte = {
+      ingredientname: ingrediente.ingredientname,
+      description: ingrediente.description,
+      active: ingrediente.active
+    };
     this.httpHeaders = new HttpHeaders()
-    .set('Accept', '*/*');
+    .set('Accept', '*/*')
+    .set('Content-Type', 'application/x-www-form-urlencoded');
+
     return this.http.put(
-      URL, { headers: this.httpHeaders }
+      URL, ingrdnte, { headers: this.httpHeaders }
       ).toPromise();
   }
 

@@ -74,6 +74,7 @@
                                     <button class="ui button" (click)="abrirModal(2, pedido, i)">Modificar</button>
                                     <button class="ui red button" (click)="eliminarPedido(i)">Eliminar</button>
                                 </div>
+                                <div class="ui label" *ngFor="let item of pedido.listaIngredientes">{{ item.ingredientname }} <i class="icon close"></i></div>
                             </div>
                         </div>
                     </div>
@@ -100,14 +101,14 @@
         <div class="ui three stackable cards">
             <div class="card" *ngFor="let ingrediente of listaIngredientes">
                 <div class="content">
-                    <div class="header">{{ ingrediente. ingredientname }}</div>
+                    <div class="header">{{ ingrediente.ingredientname }}</div>
                     <div class="description">{{ ingrediente.description }}</div>
                 </div>
                 <button *ngIf="ingrediente.active == true" class="ui bottom attached button">
-                    <i class="trash icon"></i> Add Friend
+                    <i class="trash icon"></i> Quitar
                 </button>
                 <button *ngIf="ingrediente.active == false" class="ui bottom attached button">
-                    <i class="add icon"></i> Add Friend
+                    <i class="add icon"></i> Añadir
                 </button>
             </div>
         </div>

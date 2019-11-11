@@ -3,7 +3,7 @@ import { IngredienteService } from '../../services/ingrediente/ingrediente.servi
 import { PlatoService } from '../../services/plato/plato.service';
 import { Ingrediente } from '../../services/Models/ingrediente';
 import { Plato } from '../../services/Models/plato';
-import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
+import { SuiModalService } from 'ng2-semantic-ui';
 
 @Component({
   selector: 'app-admin',
@@ -13,15 +13,29 @@ import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semanti
 export class AdminComponent implements OnInit {
 
   public listIngredientes: Ingrediente[];
+  public listPlatosIngredientes: Ingrediente[];
+  public listNewPlatoIngredientes: number[] = [];
   public listPlatos: Plato[];
 
-  public actualIngrediente: Ingrediente = {'pk_idingredient' : 1,
+  public checkBox = true;
+
+  public selectedOption; // Se coloca el valor por defecto
+  public selectorTipo: any = {
+    opciones: [
+      { id: 1, name: 'Almuerzo'},
+      { id: 2, name: 'Cena'},
+    ],
+    seleccionado: undefined
+  };
+
+  public actualIngrediente: Ingrediente = {pk_idingredient : 1,
                                           ingredientname: '',
                                           description: '',
                                           active: false};
-  public actualPlato: Plato = {'pk_idplate': 1,
-                              'fk_idtypeplate': 1,
-                              'fk_idrestaurant': 1,
+
+  public actualPlato: Plato = {pk_idplate: 1,
+                              fk_idtypeplate: 1,
+                              fk_idrestaurant: 1,
                               platename: '',
                               platedescription: '',
                               amount: 1,
@@ -29,6 +43,9 @@ export class AdminComponent implements OnInit {
                               imageplate: ''};
 
   public show: boolean = false;
+  public show1: boolean = false;
+  public show2: boolean = false;
+  public show3: boolean = false;
 
   constructor(private ingredienteService: IngredienteService,
               private platoService: PlatoService,
@@ -42,28 +59,113 @@ export class AdminComponent implements OnInit {
   async getIngredientes() {
     this.ingredienteService.getIngredientes().then( (tempIngredientes: Ingrediente[]) => {
       this.listIngredientes = tempIngredientes;
-      console.log(this.listIngredientes);
     });
   }
 
   async getPlatos() {
     this.platoService.getPlatos().then( (tempPlatos: Plato[]) => {
-      console.log(tempPlatos);
       this.listPlatos = tempPlatos;
     });
-    this.ingredienteService.getIngredienteById(3).then( (data: any) => {
+    /*this.ingredienteService.getIngredienteById(3).then( (data: any) => {
       console.log(data);
+    });*/
+  }
+
+  public update() {
+    this.ingredienteService.getIngredientes().then( (tempIngredientes: Ingrediente[]) => {
+      this.listIngredientes = tempIngredientes;
+      console.log(this.listIngredientes);
     });
   }
 
-  public abrirModal(id: number, flag: number) {
-    if (flag == 1) {
-      this.actualIngrediente = this.listIngredientes[id];
-    } else if (flag == 2) {
-      this.platoService.getPlatosById(id).then( (data: any ) => {
-        console.log(data);
+  public createPlato(nombre: string, valor: number, foto: string, descripcion: string) {
+    const tempPlatoNuevo: Plato = {
+      pk_idplate: 0,
+      fk_idtypeplate: this.selectedOption,
+      fk_idrestaurant: 2, // Se nesecita traer de otros modulos
+      platename: nombre,
+      platedescription: descripcion,
+      amount: valor,
+      active: this.checkBox,
+      imageplate: foto
+    };
+    console.log(tempPlatoNuevo);
+    this.platoService.crearPlato(tempPlatoNuevo, this.listNewPlatoIngredientes).then();
+  }
+
+  public anadirIngredientePlato(i: number) {
+    this.listNewPlatoIngredientes.push(i);
+    console.log(this.listNewPlatoIngredientes);
+  }
+
+  public quitarIngredientePlato(i: number) {
+    this.listNewPlatoIngredientes.splice(i, 1);
+    console.log(this.listNewPlatoIngredientes);
+  }
+
+  public createIngrediente(nombre: string, descripcion: string) {
+    const tempIngredienteNuevo: Ingrediente = {
+      pk_idingredient: 0,
+      ingredientname: nombre,
+      description: descripcion,
+      active: true
+    };
+    this.ingredienteService.crearIngrediente(tempIngredienteNuevo).then( (data: any) => {
+      this.update();
+    });
+  }
+
+  public updatePlate(plato: Plato, nombre: string, valor: number, foto: string, descripcion: string) {
+    if (this.checkBox) {
+      plato.platename = nombre;
+      plato.platedescription = descripcion;
+      plato.amount = valor;
+      plato.imageplate = foto;
+
+      this.platoService.actualizarPlato(plato, this.listPlatosIngredientes).then( (data: any) => {});
+    } else {
+      this.platoService.deletePlato(plato).then();
+    }
+  }
+
+  public updateIngrediente(nombre: string, descripcion: string) {
+    if (this.checkBox) {
+      this.actualIngrediente.ingredientname = nombre;
+      this.actualIngrediente.description = descripcion;
+      this.ingredienteService.actualizarIngrediente(this.actualIngrediente.pk_idingredient, this.actualIngrediente).then();
+    } else {
+      this.ingredienteService.deleteIngredienteById(this.actualIngrediente.pk_idingredient).then();
+    }
+  }
+
+  public abrirModal(id: number = -1, flag: number, index: number) {
+    if (flag === 1) {
+      this.actualIngrediente = this.listIngredientes[index];
+      this.checkBox = this.actualIngrediente.active;
+      this.show = true;
+    } else if (flag === 2) {
+      this.ingredienteService.getIngredienteByIdPlato(id).then( (data: Ingrediente[] ) => {
+        this.actualPlato = this.listPlatos[index];
+        this.selectedOption = this.actualPlato.fk_idtypeplate;
+        this.listPlatosIngredientes = data;
+        // this.listNewPlatoIngredientes.filter
+        this.checkBox = this.actualPlato.active;
+        this.show1 = true;
       });
+    } else if (flag === 3) {
+      this.listNewPlatoIngredientes = [];
+      this.show2 = true;
+    } else if (flag === 4) {
+      this.show3 = true;
     } else { }
-    this.show = true;
+  }
+
+  public getIngredienteNuevoEstado(i: number) {
+    const temp = this.listNewPlatoIngredientes.find(x => x == i);
+    if (temp == null){
+      return false;
+    } else {
+      return true;
+    }
   }
 }

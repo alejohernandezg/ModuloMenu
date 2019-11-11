@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Plato } from '../Models/plato';
+import { Ingrediente } from '../Models/ingrediente';
 
 @Injectable({
   providedIn: 'root'
@@ -39,36 +40,40 @@ export class PlatoService {
       ).toPromise();
   }
 
-  public crearPlato(plato: Plato) {
-    const URL = `http://localhost:3000/menu/ingredient?
-    pk_idplate=${plato.pk_idplate}&
-    fk_idtypeplate=${plato.fk_idtypeplate}&
-    fk_idrestaurant=${plato.fk_idrestaurant}&
-    platename=${plato.platename}&
-    platedescription=${plato.platedescription}&
-    amount=${plato.amount}&
-    active=${plato.active}&
-    imageplate=${plato.imageplate}`;
+  public crearPlato(plato: Plato, ingredientes: number[]) {
+    const URL = `http://localhost:3000/menu/plate`;
+    const tempPlatoNuevo = {plateName: plato.platename,
+      plateDescription: plato.platedescription,
+      amount: +plato.amount,
+      fk_idTypePlate: plato.fk_idtypeplate,
+      fk_idRestaurant: plato.fk_idrestaurant,
+      imageplate: plato.imageplate,
+      ingredients: ingredientes};
+    console.log(tempPlatoNuevo);
     this.httpHeaders = new HttpHeaders()
-    .set('Accept', '*/*');
+    .set('Accept', '*/*')
+    .set('Content-Type', 'application/json');
     return this.http.post(
-      URL, { headers: this.httpHeaders }
-      ).toPromise();
+      URL, tempPlatoNuevo, { headers: this.httpHeaders }
+    ).toPromise();
   }
 
-  public actualizarPlato(plato: Plato) {
-    const URL = `http://localhost:3000/menu/ingredient/${plato.pk_idplate}?
-    fk_idtypeplate=${plato.fk_idtypeplate}&
-    fk_idrestaurant=${plato.fk_idrestaurant}&
-    platename=${plato.platename}&
-    platedescription=${plato.platedescription}&
-    amount=${plato.amount}&
-    active=${plato.active}&
-    imageplate=${plato.imageplate}`;
+  public actualizarPlato(plato: Plato, ingredientes: Ingrediente[]) {
+    const URL = `http://localhost:3000/menu/ingredient/${plato.pk_idplate}`;
+    const tempPlatoUpdate = {platename: plato.platename,
+                            fk_idtypeplate: plato.fk_idtypeplate,
+                            fk_idrestaurant: plato.fk_idrestaurant,
+                            platedescription: plato.platedescription,
+                            amount: plato.amount,
+                            active: plato.active,
+                            imageplate: plato.imageplate,
+                            ingredients: ingredientes};
     this.httpHeaders = new HttpHeaders()
-    .set('Accept', '*/*');
+    .set('Accept', '*/*')
+    .set('Content-Type', 'application/x-www-form-urlencoded');
+    console.log(tempPlatoUpdate);
     return this.http.put(
-      URL, { headers: this.httpHeaders }
+      URL, tempPlatoUpdate , { headers: this.httpHeaders }
       ).toPromise();
   }
 
