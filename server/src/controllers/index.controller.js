@@ -31,12 +31,12 @@ const  getPlatesType = async (req, res) => {
 };
 
 const createPlate = async (req, res) => {
-    const { FK_idTypePlate, FK_idRestaurant, plateName, plateDescription, amount, ingredients, imageplate} = req.body;
-    const response1 = await pool.query('INSERT INTO plate (FK_idTypePlate, FK_idRestaurant, plateName, plateDescription, amount,imageplate) VALUES ($1, $2, $3, $4, $5, $6)', [FK_idTypePlate,FK_idRestaurant,plateName, plateDescription, amount,imageplate]);
-    const idPlato = await pool.query('SELECT pk_idplate from plate WHERE FK_idRestaurant = $1 AND plateName = $2', [FK_idRestaurant,plateName]);
+    const { fk_idTypePlate, fk_idRestaurant, plateName, plateDescription, amount, ingredients, imageplate} = req.body;
+    const response1 = await pool.query('INSERT INTO plate (FK_idTypePlate, FK_idRestaurant, plateName, plateDescription, amount,imageplate) VALUES ($1, $2, $3, $4, $5, $6)', [fk_idTypePlate,fk_idRestaurant,plateName, plateDescription, amount,imageplate]);
+    const idPlato = await pool.query('SELECT pk_idplate from plate WHERE FK_idRestaurant = $1 AND plateName = $2', [fk_idRestaurant,plateName]);
     
     for(var i = 0; i < ingredients.length; i++){
-        const response2 = await pool.query('INSERT INTO Plate_Ingredients (FK_idPlate, FK_idIngredient) VALUES ($1, $2)', [idPlato.rows[0].pk_idplate, ingredients[i].pk_idingredient]);
+        const response2 = await pool.query('INSERT INTO Plate_Ingredients (FK_idPlate, FK_idIngredient) VALUES ($1, $2)', [idPlato.rows[0].pk_idplate, ingredients[i]]);
     };
 
     res.json({
