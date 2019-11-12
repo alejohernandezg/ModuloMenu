@@ -58,8 +58,10 @@ const createIngredient = async(req, res) => {
 const updatePlate = async(req, res) => {
     const id = req.params.id;
     const { fk_idtypeplate, platename, platedescription, amount, ingredients,imageplate, activo} = req.body;
-    const response1 = await pool.query('UPDATE plate SET FK_idTypePlate = $1, plateName = $2, plateDescription = $3, amount = $4, imageplate = $6, active= $7 WHERE pk_idplate = $5',[fk_idtypeplate, platename, platedescription, amount, id, imageplate, activo]);
+    const response1 = await pool.query('UPDATE plate SET FK_idTypePlate = $1, plateName = $2, platedescription = $3, amount = $4, imageplate = $6, active= $7 WHERE pk_idplate = $5',[fk_idtypeplate, platename, platedescription, amount, id, imageplate, activo]);
     const response2 = await pool.query('DELETE FROM Plate_Ingredients WHERE FK_idPlate = $1', [id]);
+
+
     for(var i = 0; i < ingredients.length; i++){
         const response2 = await pool.query('INSERT INTO Plate_Ingredients (FK_idPlate, FK_idIngredient) VALUES ($1, $2)', [id, ingredients[i]]);
     };
