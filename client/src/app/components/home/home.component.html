@@ -22,7 +22,6 @@
             <div class="centrar" [suiTransition]="transitionController2">
                 <div class="ui text container centrar">
                     <h1 class="ui inverted header">Escoje tu Plato</h1>
-
                     <div class="ui four stackable cards">
                         <div class="card" *ngFor="let plato of listaPlatos; let i = index">
                             <div class="image">
@@ -74,7 +73,9 @@
                                     <button class="ui button" (click)="abrirModal(2, pedido, i)">Modificar</button>
                                     <button class="ui red button" (click)="eliminarPedido(i)">Eliminar</button>
                                 </div>
-                                <div class="ui label" *ngFor="let item of pedido.listaIngredientes">{{ item.ingredientname }} <i class="icon close"></i></div>
+                                <ng-container *ngFor="let item of pedido.listaIngredientes">
+                                    <div class="ui label" *ngIf="item.active == true">{{ item.ingredientname }}</div>
+                                </ng-container>
                             </div>
                         </div>
                     </div>
@@ -104,10 +105,10 @@
                     <div class="header">{{ ingrediente.ingredientname }}</div>
                     <div class="description">{{ ingrediente.description }}</div>
                 </div>
-                <button *ngIf="ingrediente.active == true" class="ui bottom attached button">
+                <button (click)="ingrediente.active = false" *ngIf="ingrediente.active == true" class="ui red bottom attached button">
                     <i class="trash icon"></i> Quitar
                 </button>
-                <button *ngIf="ingrediente.active == false" class="ui bottom attached button">
+                <button (click)="ingrediente.active = true" *ngIf="ingrediente.active == false" class="ui green bottom attached button">
                     <i class="add icon"></i> Añadir
                 </button>
             </div>
@@ -116,12 +117,12 @@
         <div class="ui form">
             <div class="field">
                 <label>Comentarios</label>
-                <input type="text">
+                <input type="text" #comentarioPlatoAvanzado>
             </div>
         </div>
     </div>
     <div class="actions">
-        <button class="ui red button" (click)="modal.deny()">Cancel</button>
-        <button class="ui green button" (click)="modal.approve('done')" autofocus>OK</button>
+        <button class="ui red button" (click)="show = false">Cancel</button>
+        <button class="ui green button" (click)="guardarPlatoAvanzado(comentarioPlatoAvanzado.value)" autofocus>Guardar</button>
     </div>
 </sui-modal>

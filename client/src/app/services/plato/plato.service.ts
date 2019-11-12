@@ -49,7 +49,6 @@ export class PlatoService {
       fk_idRestaurant: plato.fk_idrestaurant,
       imageplate: plato.imageplate,
       ingredients: ingredientes};
-    console.log(tempPlatoNuevo);
     this.httpHeaders = new HttpHeaders()
     .set('Accept', '*/*')
     .set('Content-Type', 'application/json');
@@ -58,19 +57,18 @@ export class PlatoService {
     ).toPromise();
   }
 
-  public actualizarPlato(plato: Plato, ingredientes: Ingrediente[]) {
+  public actualizarPlato(plato: Plato, ingredientes: number[]) {
     const URL = `http://localhost:3000/menu/ingredient/${plato.pk_idplate}`;
-    const tempPlatoUpdate = {platename: plato.platename,
-                            fk_idtypeplate: plato.fk_idtypeplate,
-                            fk_idrestaurant: plato.fk_idrestaurant,
-                            platedescription: plato.platedescription,
-                            amount: plato.amount,
-                            active: plato.active,
-                            imageplate: plato.imageplate,
-                            ingredients: ingredientes};
+    const tempPlatoUpdate = {plateName: plato.platename,
+      plateDescription: plato.platedescription,
+      amount: +plato.amount,
+      fk_idTypePlate: plato.fk_idtypeplate,
+      fk_idRestaurant: plato.fk_idrestaurant,
+      imageplate: plato.imageplate,
+      ingredients: ingredientes};
     this.httpHeaders = new HttpHeaders()
     .set('Accept', '*/*')
-    .set('Content-Type', 'application/x-www-form-urlencoded');
+    .set('Content-Type', 'application/json');
     console.log(tempPlatoUpdate);
     return this.http.put(
       URL, tempPlatoUpdate , { headers: this.httpHeaders }

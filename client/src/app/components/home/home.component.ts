@@ -77,6 +77,12 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  public guardarPlatoAvanzado(cmntro: string) {
+    this.tempPedido.push( new Pedido(this.activoPlato, this.listaIngredientes, cmntro));
+    this.contPedidos = this.contPedidos + 1;
+    this.show = false;
+  }
+
   public animate1In(transitionName: string = 'scale') {
 
     this.transitionController1.animate(
@@ -126,6 +132,7 @@ export class HomeComponent implements OnInit {
       this.animate2Out();
       this.activeCanvas = this.activeCanvas + 1;
       this.animate3In();
+      console.log(this.tempPedido[0].listaIngredientes);
     }
   }
 
