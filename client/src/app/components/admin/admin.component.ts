@@ -4,6 +4,7 @@ import { PlatoService } from '../../services/plato/plato.service';
 import { Ingrediente } from '../../services/Models/ingrediente';
 import { Plato } from '../../services/Models/plato';
 import { SuiModalService } from 'ng2-semantic-ui';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-admin',
@@ -116,13 +117,14 @@ export class AdminComponent implements OnInit {
   }
 
   public updatePlate(plato: Plato, nombre: string, valor: number, foto: string, descripcion: string) {
+    console.log(plato);
     if (this.checkBox) {
       plato.platename = nombre;
       plato.platedescription = descripcion;
       plato.amount = valor;
       plato.imageplate = foto;
 
-      this.platoService.actualizarPlato(plato, this.listPlatosIngredientes).then( (data: any) => {});
+      this.platoService.actualizarPlato(plato, this.listNewPlatoIngredientes).then( (data: any) => {});
     } else {
       this.platoService.deletePlato(plato).then();
     }
@@ -144,11 +146,14 @@ export class AdminComponent implements OnInit {
       this.checkBox = this.actualIngrediente.active;
       this.show = true;
     } else if (flag === 2) {
+      this.listNewPlatoIngredientes = [];
       this.ingredienteService.getIngredienteByIdPlato(id).then( (data: Ingrediente[] ) => {
         this.actualPlato = this.listPlatos[index];
         this.selectedOption = this.actualPlato.fk_idtypeplate;
         this.listPlatosIngredientes = data;
-        // this.listNewPlatoIngredientes.filter
+        for  (let i = 0; i < data.length; i++) {
+          this.listNewPlatoIngredientes.push(this.listPlatosIngredientes[i].pk_idingredient);
+        }
         this.checkBox = this.actualPlato.active;
         this.show1 = true;
       });

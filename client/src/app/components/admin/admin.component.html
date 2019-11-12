@@ -145,7 +145,6 @@
                                     <sui-checkbox [(ngModel)]="checkBox" [ngModelOptions]="{standalone: true}" class="toggle">Estado</sui-checkbox>
                                 </div>
                             </div>
-                            <button (click)="updatePlate(actualPlato,nombrePlato.value,valorPlato.value,fotoPlato.value,descripcionPlato.value)" class="ui button fluid" type="submit">Guardar</button>
                         </form>
                     </div>
                 </div>
@@ -178,8 +177,8 @@
         </sui-accordion>
     </div>
     <div class="actions">
-        <button class="ui red button" (click)="modal.deny()">Cancel</button>
-        <button class="ui green button" (click)="modal.approve('done')" autofocus>OK</button>
+        <button class="ui red button" (click)="show1 = false">Cancel</button>
+        <button class="ui green button" (click)="updatePlate(actualPlato,nombrePlato.value,valorPlato.value,fotoPlato.value,descripcionPlato.value); show1 = false" autofocus>Guardar</button>
     </div>
 </sui-modal>
 
