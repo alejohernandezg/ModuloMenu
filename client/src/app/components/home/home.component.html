@@ -73,11 +73,9 @@
                                     <button class="ui button" (click)="abrirModal(2, pedido, i)">Modificar</button>
                                     <button class="ui red button" (click)="eliminarPedido(i)">Eliminar</button>
                                 </div>
-                                <div class="ui" *ngFor="let item of pedido.listaIngredientes">
-                                    <div class="ui label" *ngIf="item.active == true">
-                                        {{ item.ingredientname }}
-                                    </div>
-                                </div>
+                                <ng-container *ngFor="let item of pedido.listaIngredientes">
+                                    <div class="ui label" *ngIf="item.active == true">{{ item.ingredientname }}</div>
+                                </ng-container>
                             </div>
                         </div>
                     </div>
