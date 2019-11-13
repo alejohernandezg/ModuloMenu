@@ -58,12 +58,13 @@ export class PlatoService {
   }
 
   public actualizarPlato(plato: Plato, ingredientes: number[]) {
-    const URL = `http://localhost:3000/menu/ingredient/${plato.pk_idplate}`;
-    const tempPlatoUpdate = {plateName: plato.platename,
-      plateDescription: plato.platedescription,
+    const URL = `http://localhost:3000/menu/plate/${plato.pk_idplate}`;
+    const tempPlatoUpdate = {platename: plato.platename,
+      platedescription: plato.platedescription,
       amount: +plato.amount,
-      fk_idTypePlate: plato.fk_idtypeplate,
-      fk_idRestaurant: plato.fk_idrestaurant,
+      activo: true,
+      fk_idtypeplate: plato.fk_idtypeplate,
+      fk_idrestaurant: plato.fk_idrestaurant,
       imageplate: plato.imageplate,
       ingredients: ingredientes};
     this.httpHeaders = new HttpHeaders()
