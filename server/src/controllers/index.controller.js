@@ -8,6 +8,9 @@ const pool = new Pool({
 });
 
 
+
+// GET CONTROLLERS --------------------
+
 const  getRestaurantPlates = async (req, res) => {
     const idRestaurante = req.params.id;
     response = await pool.query('SELECT * FROM Plate WHERE fk_idrestaurant = $1', [idRestaurante]);
@@ -29,6 +32,24 @@ const  getPlatesType = async (req, res) => {
     response = await pool.query('SELECT * FROM Plate WHERE fk_idtypeplate = $1', [idType]);
     res.json(response.rows)
 };
+
+const getIngredientsByPlate = async(req, res) => {
+    const id = req.params.id;
+
+    const response = await pool.query('SELECT PK_idIngredient, ingredientName, description, active FROM Ingredient INNER JOIN Plate_Ingredients ON(FK_idIngredient = PK_idIngredient)WHERE FK_idPlate = $1;', [id]);
+
+    res.json(response.rows)
+}
+
+const getPlatesByReservation = async(req, res) => {
+    const id = req.params.id;
+
+    const response = await pool.query('SELECT PK_idPlate, FK_idTypePlate, plateName, plateDescription, amount, imagePlate FROM Reservation_Plate INNER JOIN Plate ON (FK_idPlate = PK_idPlate) WHERE FK_idRes = $1;', [id]);
+
+    res.json(response.rows)
+}
+
+// POST CONTROLLERS --------------------
 
 const createPlate = async (req, res) => {
     const { fk_idTypePlate, fk_idRestaurant, plateName, plateDescription, amount, ingredients, imageplate} = req.body;
@@ -54,6 +75,9 @@ const createIngredient = async(req, res) => {
     });
 
 };
+
+
+// PUT CONTROLLERS --------------------
 
 const updatePlate = async(req, res) => {
     const id = req.params.id;
@@ -101,13 +125,6 @@ const deleteIngredient = async(req, res) => {
     });
 };
 
-const getIngredientsByPlate = async(req, res) => {
-    const id = req.params.id;
-
-    const response = await pool.query('SELECT PK_idIngredient, ingredientName, description, active FROM Ingredient WHERE PK_idIngredient IN (SELECT FK_idIngredient FROM Plate_Ingredients WHERE FK_idPlate = $1)', [id]);
-
-    res.json(response.rows)
-}
 
 module.exports = {
     getRestaurantPlates,
@@ -120,5 +137,6 @@ module.exports = {
     updateIngredient,
     deletePlate,
     deleteIngredient,
-    getIngredientsByPlate
+    getIngredientsByPlate,
+    getPlatesByReservation
 }
