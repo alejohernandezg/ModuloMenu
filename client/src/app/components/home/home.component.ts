@@ -5,6 +5,7 @@ import { Plato } from '../../services/Models/plato';
 import { Ingrediente } from '../../services/Models/ingrediente';
 import { PlatoService } from '../../services/plato/plato.service';
 import { IngredienteService } from '../../services/ingrediente/ingrediente.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -12,6 +13,8 @@ import { IngredienteService } from '../../services/ingrediente/ingrediente.servi
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+
+  private idRestarante = -1;
 
   public transitionController1 = new TransitionController();
   public transitionController2 = new TransitionController(false);
@@ -27,6 +30,7 @@ export class HomeComponent implements OnInit {
   public show1: boolean = false;
 
   public listaPlatos: Plato[] = [];
+  public listaPlatosTodas: Plato[] = [];
   public listaIngredientes: Ingrediente[] = [];
 
   public activoPlato: Plato;
@@ -37,16 +41,22 @@ export class HomeComponent implements OnInit {
 
   constructor(private servicioPlato: PlatoService,
               private servicioIngrediente: IngredienteService,
+              private activateRoute: ActivatedRoute,
               public modalService: SuiModalService) { }
 
   ngOnInit() {
+    this.activateRoute.params.subscribe( params => {
+      this.idRestarante = params[ 'info' ];
+      console.log(this.idRestarante);
+      this.servicioPlato.getPlatosById(this.idRestarante).then( (dataPlatos: Plato[]) => {
+        this.listaPlatosTodas = dataPlatos;
+      });
+    });
   }
 
   public getPlatosByTime(id: number) {
-    this.servicioPlato.getPlatosByType(id).then( (data: Plato[] ) => {
-      // console.log(data);
-      this.listaPlatos = data;
-    });
+    console.log(this.listaPlatosTodas);
+    this.listaPlatos = this.listaPlatosTodas.filter(x => x.fk_idtypeplate === id);
   }
 
   public agregarPlatoOrden(idLista: number, idPlato: number) {
