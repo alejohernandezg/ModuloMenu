@@ -18,10 +18,10 @@ services:
         dockerfile: Dockerfil # specify the directory of the Dockerfile
     image: node-resvit
     ports:
-<<<<<<< HEAD
+<<<<<< HEAD
       - "7000:3000" #specify ports forewarding
 =======
-      - "3000:3000" #specify ports forewarding
+      - "7000:3000" #specify ports forewarding
     environment:
       SEQ_DB: postgres
       SEQ_USER: postgres
