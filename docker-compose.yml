@@ -15,24 +15,20 @@ services:
   express: #name of the second service
     build: 
         context: ./server
-        dockerfile: Dockerfil # specify the directory of the Dockerfile
+        dockerfile: Dockerfile # specify the directory of the Dockerfile
     image: node-resvit
     ports:
       - "7000:3000" #specify ports forewarding
-    environment:
-      SEQ_DB: postgres
-      SEQ_USER: postgres
-      SEQ_PW: 1234
-      PORT: 3000
-      DATABASE_URL: postgres://postgres:1234@181.50.100.167:7002/postgres
     volumes:
       - ./server:/usr/src/app
 
   postgres:
-    image: postgres:11.2-alpine
+    build:
+        context: ./database
+        dockerfile: Dockerfile
     ports:
-      - "7002:5000"
+      - "7002:3000" #specify ports forewarding
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
+      POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
