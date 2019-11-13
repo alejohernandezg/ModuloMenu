@@ -19,10 +19,12 @@ export class HomeComponent implements OnInit {
 
   public activeCanvas = 1;
   public contPedidos = 0;
+  public actualIndexPedido = -1;
 
   public comentario: string = '';
 
   public show: boolean = false;
+  public show1: boolean = false;
 
   public listaPlatos: Plato[] = [];
   public listaIngredientes: Ingrediente[] = [];
@@ -31,6 +33,7 @@ export class HomeComponent implements OnInit {
   public activoIngrediente: Ingrediente;
 
   public tempPedido: Pedido[] = [];
+  public actualPedido: Pedido;
 
   constructor(private servicioPlato: PlatoService,
               private servicioIngrediente: IngredienteService,
@@ -74,6 +77,11 @@ export class HomeComponent implements OnInit {
       this.activoPlato = this.tempPedido[indx].infoPlato;
       this.listaIngredientes = this.tempPedido[indx].listaIngredientes;
       this.comentario = this.tempPedido[indx].comentario;
+    } else if ( flag === 3 ) {
+      this.actualPedido = dato;
+      this.actualIndexPedido = indx;
+      this.show1 = true;
+      this.listaIngredientes = this.actualPedido.listaIngredientes;
     }
   }
 
@@ -81,6 +89,14 @@ export class HomeComponent implements OnInit {
     this.tempPedido.push( new Pedido(this.activoPlato, this.listaIngredientes, cmntro));
     this.contPedidos = this.contPedidos + 1;
     this.show = false;
+  }
+
+  public guardarPlatoAvanzado1(cmntro: string) {
+    this.tempPedido[this.actualIndexPedido] = new Pedido(this.actualPedido.infoPlato, this.listaIngredientes, cmntro);
+    console.log(this.tempPedido);
+    this.actualIndexPedido = -1;
+    this.actualPedido = null;
+    this.show1 = false;
   }
 
   public animate1In(transitionName: string = 'scale') {
