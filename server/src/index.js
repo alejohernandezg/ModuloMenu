@@ -29,5 +29,5 @@ app.use(express.urlencoded({extended: false}));
 app.use('/menu', require('./routes/index'));
 
 
-app.listen(3000);
-console.log('Server on port 3000')
+app.listen(3001);
+console.log('Server on port 3001')
