@@ -6,6 +6,7 @@ const pool = new Pool({
     user: 'postgres',
     password: 'postgres',
     database: 'postgres'
+    
 });
 
 // GET CONTROLLERS --------------------
