@@ -1,7 +1,8 @@
 const { Pool } = require('pg');
 
 const pool = new Pool({
-    host: 'localhost',
+    host: '181.50.100.167',
+    port: '7002',
     user: 'postgres',
     password: '1234',
     database: 'postgres'
@@ -39,7 +40,7 @@ const getIngredientsByPlate = async(req, res) => {
     const response = await pool.query('SELECT PK_idIngredient, ingredientName, description, active FROM Ingredient INNER JOIN Plate_Ingredients ON(FK_idIngredient = PK_idIngredient)WHERE FK_idPlate = $1;', [id]);
 
     res.json(response.rows)
-}
+};
 
 const getPlatesByReservation = async(req, res) => {
     const id = req.params.id;
@@ -47,7 +48,7 @@ const getPlatesByReservation = async(req, res) => {
     const response = await pool.query('SELECT PK_idPlate, FK_idTypePlate, plateName, plateDescription, amount, imagePlate FROM Reservation_Plate INNER JOIN Plate ON (FK_idPlate = PK_idPlate) WHERE FK_idRes = $1;', [id]);
 
     res.json(response.rows)
-}
+};
 
 // POST CONTROLLERS --------------------
 
@@ -73,10 +74,11 @@ const createIngredient = async(req, res) => {
     res.json({
         message: 'Ingrediente creado'
     });
-
 };
 
-
+const createReservation = async(req, res) => {
+    const id = req.params.id;
+}
 // PUT CONTROLLERS --------------------
 
 const updatePlate = async(req, res) => {
