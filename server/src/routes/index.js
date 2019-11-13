@@ -12,7 +12,8 @@ const { getRestaurantPlates,
     deletePlate,
     deleteIngredient,
     getIngredientsByPlate,
-    getPlatesByReservation } = require('../controllers/index.controller')
+    getPlatesByReservation,
+    createReservation } = require('../controllers/index.controller')
 
 // GET ROUTES
 router.get('/plates', getPlates)
@@ -24,6 +25,7 @@ router.get('/plates/reservation/:id', getPlatesByReservation)
 // POST ROUTES
 router.post('/plate', createPlate);
 router.post('/ingredient', createIngredient);
+router.post('/reservation/:idUsuario/:idReservation/:idRestaurante', createReservation);
 
 // PUT ROUTES
 router.put('/plate/:id', updatePlate);

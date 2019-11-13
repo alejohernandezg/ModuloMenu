@@ -9,8 +9,6 @@ const pool = new Pool({
     database: 'postgres'
 });
 
-
-
 // GET CONTROLLERS --------------------
 
 const  getRestaurantPlates = async (req, res) => {
@@ -78,8 +76,17 @@ const createIngredient = async(req, res) => {
 };
 
 const createReservation = async(req, res) => {
-    const id = req.params.id;
-}
+    const idUsuario = req.params.idUsuario;
+    const idReservation = req.params.idReservation;
+    const idRestaurante = req.params.idRestaurante;
+
+    const response = await pool.query('INSERT INTO Reservation (PK_idRes, FK_idUser, FK_idRestaurant) VALUES ($1, $2, $3)', [idReservation, idUsuario, idRestaurante]);
+
+    res.json({
+        message: 'Reserva creada'
+    });
+};
+
 // PUT CONTROLLERS --------------------
 
 const updatePlate = async(req, res) => {
@@ -141,5 +148,6 @@ module.exports = {
     deletePlate,
     deleteIngredient,
     getIngredientsByPlate,
-    getPlatesByReservation
+    getPlatesByReservation,
+    createReservation
 }
