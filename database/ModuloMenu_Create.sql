@@ -38,6 +38,23 @@ CREATE TABLE TypeOfPlate (
     description varchar(200)  NOT NULL,
     CONSTRAINT TiposPlato_pk PRIMARY KEY (PK_idTypeOfPlate)
 );
+-- Table: Reservation
+CREATE TABLE Reservation(
+    PK_idRes INT NOT NULL,
+    FK_idUser INT NOT NULL,
+    FK_idRestaurant INT NOT NULL,
+    Comment varchar(300) NULL,
+    CONSTRAINT Reservation_pk PRIMARY KEY (PK_idRes)
+);
+
+-- Table: Reservation_Plate
+CREATE TABLE Reservation_Plate (
+    PK_idResXPlate SERIAL NOT NULL,
+    FK_idPlate INT NULL,
+    FK_idRes INT NOT NULL,
+    CONSTRAINT ReservationXPlates_pk PRIMARY KEY (PK_idResXPlate)
+);
+
 
 -- foreign keys
 -- Reference: PlatosXIngredientes_Ingredientes (table: Plate_Ingredients)
@@ -57,3 +74,15 @@ ALTER TABLE Plate ADD CONSTRAINT Platos_TiposPlato
     FOREIGN KEY (FK_idTypePlate)
     REFERENCES TypeOfPlate (PK_idTypeOfPlate);
 -- End of file.
+
+-- Reference: ReservationXPlates_Reservation (table: Reservation_Plate)
+ALTER  TABLE Reservation_Plate ADD CONSTRAINT ReservationXPlates_Reservation
+    FOREIGN KEY (FK_idRes) 
+    REFERENCES Reservation (PK_idRes)
+;
+
+-- Reference: ReservationXPlates_Plates (table: Reservation_Plate)
+ALTER  TABLE Reservation_Plate ADD CONSTRAINT ReservationXPlates_Plates
+    FOREIGN KEY (FK_idPlate) 
+    REFERENCES Plate (PK_idPlate)
+;
