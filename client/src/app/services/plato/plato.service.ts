@@ -7,7 +7,7 @@ import { Ingrediente } from '../Models/ingrediente';
   providedIn: 'root'
 })
 export class PlatoService {
-  private baseURL = 'http://181.50.100.167:7001/menu';
+  private baseURL = 'http://181.50.100.167:7000/menu';
 
   private httpHeaders: HttpHeaders;
   private parametros: HttpParams;
