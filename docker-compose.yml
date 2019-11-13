@@ -18,9 +18,20 @@ services:
         dockerfile: Dockerfil # specify the directory of the Dockerfile
     image: node-resvit
     ports:
+<<<<<<< HEAD
       - "7000:3000" #specify ports forewarding
+=======
+      - "3000:3000" #specify ports forewarding
+    environment:
+      SEQ_DB: postgres
+      SEQ_USER: postgres
+      SEQ_PW: 1234
+      PORT: 3000
+      DATABASE_URL: postgres://postgres:1234@181.50.100.167:7002/postgres
+>>>>>>> cb1329d9bf91ebcf4d4a5a030cb5b58ba88a6423
     volumes:
       - ./server:/usr/src/app
+
   postgres:
     image: postgres:11.2-alpine
     ports:
