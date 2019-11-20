@@ -5,6 +5,7 @@ import { Plato } from '../../services/Models/plato';
 import { Ingrediente } from '../../services/Models/ingrediente';
 import { PlatoService } from '../../services/plato/plato.service';
 import { IngredienteService } from '../../services/ingrediente/ingrediente.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -13,37 +14,49 @@ import { IngredienteService } from '../../services/ingrediente/ingrediente.servi
 })
 export class HomeComponent implements OnInit {
 
+  private idRestarante = -1;
+
   public transitionController1 = new TransitionController();
   public transitionController2 = new TransitionController(false);
   public transitionController3 = new TransitionController(false);
 
   public activeCanvas = 1;
   public contPedidos = 0;
+  public actualIndexPedido = -1;
 
   public comentario: string = '';
 
   public show: boolean = false;
+  public show1: boolean = false;
 
   public listaPlatos: Plato[] = [];
+  public listaPlatosTodas: Plato[] = [];
   public listaIngredientes: Ingrediente[] = [];
 
   public activoPlato: Plato;
   public activoIngrediente: Ingrediente;
 
   public tempPedido: Pedido[] = [];
+  public actualPedido: Pedido;
 
   constructor(private servicioPlato: PlatoService,
               private servicioIngrediente: IngredienteService,
+              private activateRoute: ActivatedRoute,
               public modalService: SuiModalService) { }
 
   ngOnInit() {
+    this.activateRoute.params.subscribe( params => {
+      this.idRestarante = params[ 'info' ];
+      console.log(this.idRestarante);
+      this.servicioPlato.getPlatosById(this.idRestarante).then( (dataPlatos: Plato[]) => {
+        this.listaPlatosTodas = dataPlatos;
+      });
+    });
   }
 
   public getPlatosByTime(id: number) {
-    this.servicioPlato.getPlatosByType(id).then( (data: Plato[] ) => {
-      // console.log(data);
-      this.listaPlatos = data;
-    });
+    console.log(this.listaPlatosTodas);
+    this.listaPlatos = this.listaPlatosTodas.filter(x => x.fk_idtypeplate === id);
   }
 
   public agregarPlatoOrden(idLista: number, idPlato: number) {
@@ -74,6 +87,11 @@ export class HomeComponent implements OnInit {
       this.activoPlato = this.tempPedido[indx].infoPlato;
       this.listaIngredientes = this.tempPedido[indx].listaIngredientes;
       this.comentario = this.tempPedido[indx].comentario;
+    } else if ( flag === 3 ) {
+      this.actualPedido = dato;
+      this.actualIndexPedido = indx;
+      this.show1 = true;
+      this.listaIngredientes = this.actualPedido.listaIngredientes;
     }
   }
 
@@ -81,6 +99,14 @@ export class HomeComponent implements OnInit {
     this.tempPedido.push( new Pedido(this.activoPlato, this.listaIngredientes, cmntro));
     this.contPedidos = this.contPedidos + 1;
     this.show = false;
+  }
+
+  public guardarPlatoAvanzado1(cmntro: string) {
+    this.tempPedido[this.actualIndexPedido] = new Pedido(this.actualPedido.infoPlato, this.listaIngredientes, cmntro);
+    console.log(this.tempPedido);
+    this.actualIndexPedido = -1;
+    this.actualPedido = null;
+    this.show1 = false;
   }
 
   public animate1In(transitionName: string = 'scale') {

@@ -6,6 +6,7 @@ import { Ingrediente } from '../Models/ingrediente';
   providedIn: 'root'
 })
 export class IngredienteService {
+  private baseURL = 'http://181.50.100.167:7000/menu'; 
 
   private httpHeaders: HttpHeaders;
   private parametros: HttpParams;
@@ -13,7 +14,7 @@ export class IngredienteService {
   constructor(private http: HttpClient) { }
 
   public getIngredientes() {
-    const URL = 'http://localhost:3000/menu/ingredients';
+    const URL = this.baseURL + '/ingredients';
     this.httpHeaders = new HttpHeaders()
     .set('Accept', '*/*');
     return this.http.get(
@@ -22,7 +23,7 @@ export class IngredienteService {
   }
 
   public getIngredienteByIdPlato(id: number) {
-    const URL = `http://localhost:3000/menu/ingredients/${id}`;
+    const URL = this.baseURL + `/ingredients/${id}`;
     this.httpHeaders = new HttpHeaders()
     .set('Accept', '*/*');
     return this.http.get(
@@ -31,7 +32,7 @@ export class IngredienteService {
   }
 
   public crearIngrediente(ingrediente: Ingrediente) {
-    const URL = `http://localhost:3000/menu/ingredient`;
+    const URL = this.baseURL + `/ingredient`;
     const tempIngredienteNuevo = {
       ingredientname : ingrediente.ingredientname,
       description: ingrediente.description,
@@ -45,7 +46,7 @@ export class IngredienteService {
   }
 
   public getIngredienteById(id: number) {
-    const URL = `http://localhost:3000/menu/ingredients/${id}`;
+    const URL = this.baseURL + `/ingredients/${id}`;
     this.httpHeaders = new HttpHeaders()
     .set('Accept', '*/*');
     return this.http.get(
@@ -54,7 +55,7 @@ export class IngredienteService {
   }
 
   public actualizarIngrediente(id: number, ingrediente: Ingrediente) {
-    const URL = `http://localhost:3000/menu/ingredient/${id}`;
+    const URL = this.baseURL + `/ingredient/${id}`;
     const ingrdnte = {
       ingredientname: ingrediente.ingredientname,
       description: ingrediente.description,
@@ -70,7 +71,7 @@ export class IngredienteService {
   }
 
   public deleteIngredienteById(id: number) {
-    const URL = `http://localhost:3000/menu/delete/ingredient/${id}`;
+    const URL = this.baseURL + `/delete/ingredient/${id}`;
     this.httpHeaders = new HttpHeaders()
     .set('Accept', '*/*');
     return this.http.put(

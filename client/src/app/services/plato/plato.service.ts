@@ -7,6 +7,7 @@ import { Ingrediente } from '../Models/ingrediente';
   providedIn: 'root'
 })
 export class PlatoService {
+  private baseURL = 'http://181.50.100.167:7000/menu';
 
   private httpHeaders: HttpHeaders;
   private parametros: HttpParams;
@@ -14,7 +15,7 @@ export class PlatoService {
   constructor(private http: HttpClient) { }
 
   public getPlatos() {
-    const URL = 'http://localhost:3000/menu/plates';
+    const URL = this.baseURL + '/plates';
     this.httpHeaders = new HttpHeaders()
     .set('Accept', '*/*');
     return this.http.get(
@@ -23,7 +24,7 @@ export class PlatoService {
   }
 
   public getPlatosByType(id: number) {
-    const URL = `http://localhost:3000/menu/plates/type/${id}`;
+    const URL = this.baseURL + `/plates/type/${id}`;
     this.httpHeaders = new HttpHeaders()
     .set('Accept', '*/*');
     return this.http.get(
@@ -32,7 +33,7 @@ export class PlatoService {
   }
 
   public getPlatosById(id: number) {
-    const URL = `http://localhost:3000/menu/plates/${id}`;
+    const URL = this.baseURL + `/plates/${id}`;
     this.httpHeaders = new HttpHeaders()
     .set('Accept', '*/*');
     return this.http.get(
@@ -41,7 +42,7 @@ export class PlatoService {
   }
 
   public crearPlato(plato: Plato, ingredientes: number[]) {
-    const URL = `http://localhost:3000/menu/plate`;
+    const URL = this.baseURL + `/plate`;
     const tempPlatoNuevo = {plateName: plato.platename,
       plateDescription: plato.platedescription,
       amount: +plato.amount,
@@ -58,12 +59,13 @@ export class PlatoService {
   }
 
   public actualizarPlato(plato: Plato, ingredientes: number[]) {
-    const URL = `http://localhost:3000/menu/ingredient/${plato.pk_idplate}`;
-    const tempPlatoUpdate = {plateName: plato.platename,
-      plateDescription: plato.platedescription,
+    const URL = this.baseURL + `/plate/${plato.pk_idplate}`;
+    const tempPlatoUpdate = {platename: plato.platename,
+      platedescription: plato.platedescription,
       amount: +plato.amount,
-      fk_idTypePlate: plato.fk_idtypeplate,
-      fk_idRestaurant: plato.fk_idrestaurant,
+      activo: true,
+      fk_idtypeplate: plato.fk_idtypeplate,
+      fk_idrestaurant: plato.fk_idrestaurant,
       imageplate: plato.imageplate,
       ingredients: ingredientes};
     this.httpHeaders = new HttpHeaders()
@@ -76,7 +78,7 @@ export class PlatoService {
   }
 
   public deletePlato(plato: Plato) {
-    const URL = `http://localhost:3000/menu/delete/plate/${plato.pk_idplate}`;
+    const URL = this.baseURL + `/delete/plate/${plato.pk_idplate}`;
     this.httpHeaders = new HttpHeaders()
     .set('Accept', '*/*');
     return this.http.put(

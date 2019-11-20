@@ -100,7 +100,7 @@ export class AdminComponent implements OnInit {
   }
 
   public quitarIngredientePlato(i: number) {
-    this.listNewPlatoIngredientes.splice(i, 1);
+    this.listNewPlatoIngredientes = this.listNewPlatoIngredientes.filter(item => item !== i);
     console.log(this.listNewPlatoIngredientes);
   }
 
@@ -166,8 +166,8 @@ export class AdminComponent implements OnInit {
   }
 
   public getIngredienteNuevoEstado(i: number) {
-    const temp = this.listNewPlatoIngredientes.find(x => x == i);
-    if (temp == null){
+    const temp = this.listNewPlatoIngredientes.find(x => x === i);
+    if (temp == null) {
       return false;
     } else {
       return true;
