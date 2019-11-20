@@ -13,7 +13,8 @@ const { getRestaurantPlates,
     deleteIngredient,
     getIngredientsByPlate,
     getPlatesByReservation,
-    createReservation } = require('../controllers/index.controller')
+    createReservation,
+    addPlatesToReservation } = require('../controllers/index.controller')
 
 // GET ROUTES
 router.get('/plates', getPlates)
@@ -32,6 +33,7 @@ router.put('/plate/:id', updatePlate);
 router.put('/ingredient/:id', updateIngredient);
 router.put('/delete/plate/:id', deletePlate);
 router.put('/delete/ingredient/:id', deleteIngredient);
+router.put('/reservation/plates/:id', addPlatesToReservation);
 
 
 module.exports = router;

@@ -6,8 +6,7 @@ const pool = new Pool({
     port: '7002',
     user: 'postgres',
     password: '1234',
-    database: 'postgres'
-    
+    database: 'postgres'  
 });
 
 // GET CONTROLLERS --------------------
@@ -88,6 +87,7 @@ const createReservation = async(req, res) => {
     });
 };
 
+
 // PUT CONTROLLERS --------------------
 
 const updatePlate = async(req, res) => {
@@ -136,6 +136,25 @@ const deleteIngredient = async(req, res) => {
     });
 };
 
+const addPlatesToReservation = async(req, res) => {
+    const idReserva = req.params.id;
+    let totalAmount = 0;
+    
+    const {plates} = req.body;
+    console.log(idReserva);
+    for(var i = 0; i < plates.length; i++){
+        const response = await pool.query('INSERT INTO Reservation_Plate (FK_idPlate, FK_idRes, ingredients) VALUES ($1, $2, $3)', [plates[i]["idPlate"], idReserva, plates[i]["ingredients"]]);
+        totalAmount = totalAmount + plates[i]["amount"];
+    };
+
+    console.log(totalAmount)
+
+    const response2 = await pool.query('UPDATE Reservation SET totalAmount = $1 WHERE PK_idRes = $2', [totalAmount, idReserva]);
+
+    res.json({
+        message: 'platos añadidos a la reserva'
+    });
+};
 
 module.exports = {
     getRestaurantPlates,
@@ -150,5 +169,6 @@ module.exports = {
     deleteIngredient,
     getIngredientsByPlate,
     getPlatesByReservation,
-    createReservation
+    createReservation,
+    addPlatesToReservation
 }
