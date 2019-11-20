@@ -5,15 +5,18 @@
             <div class="ui inverted segment">
                 <div class="ui inverted pointing secondary menu">
                     <a class="item active">Menu</a>
+                    <a class="item" (click)="redirectProfile()">Mi Perfil</a>
+                    <a class="item" (click)="redirectReservas()">Reservas Publicas</a>
+                    <a class="item" (click)="redirectBuscar()">Buscar Restaurantes</a>
                 </div>
             </div>
         </div>
         <div class="UserInformation" *ngIf="estaLogueado == 1">
-            Bienvenido(a) <br>
+            {{nombre}}
         </div>
         <div class="LogOut" *ngIf="estaLogueado == 1">
             <button (click)="redirectProfile()" class="circular ui icon button">
-            <i class="icon log out"></i>
+                <i class="icon log out"></i>
           </button>
         </div>
 
@@ -94,7 +97,7 @@
                           {{ contPedidos }}
                         </a>
                             </div>
-                            <button *ngIf="siguiente == 0" class="fluid ui button" style="margin-top:1rem;margin-bottom: 2rem;">Ir a Reservas</button>
+                            <button *ngIf="siguiente == 0" class="fluid ui button" style="margin-top:1rem;margin-bottom: 2rem;" (click)="redirectRestaurante()">Devolverse a Restaurante</button>
                         </div>
                     </div>
                     <div class="centrar" [suiTransition]="transitionController3">

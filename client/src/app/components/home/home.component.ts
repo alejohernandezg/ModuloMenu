@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit {
   public siguiente = 0;
   public total = 0;
   public estaLogueado = 0;
+  public nombre;
 
   public transitionController1 = new TransitionController();
   public transitionController2 = new TransitionController(false);
@@ -69,6 +70,9 @@ export class HomeComponent implements OnInit {
       this.servicioUsuario.getUsuarioConectado(this.idPersona).then((data:any) => {
         if (data.response == 2) {
           this.estaLogueado = 1;
+          this.servicioUsuario.getUsuarioName(this.idPersona).then( (info: any) => {
+            this.nombre = info.content.name;
+          });
         } else {
           this.estaLogueado = 0;
         }
@@ -142,7 +146,9 @@ export class HomeComponent implements OnInit {
   }
 
   public finalizar() {
-    this.servicioReserva.addPlatesToReservation(this.idReserva, this.tempPedido).then( (data: any) => {});
+    this.servicioReserva.addPlatesToReservation(this.idReserva, this.tempPedido).then( (data: any) => {
+      this.redirectRestaurante();
+    });
   }
 
   public animate1In(transitionName: string = 'scale') {
@@ -195,7 +201,9 @@ export class HomeComponent implements OnInit {
   }
 
   public atras(numero: number) {
-    if (numero == 1) {
+    if (numero == 0) {
+      this.redirectRestaurante();
+    }else if (numero == 1) {
       this.animate2Out();
       this.activeCanvas = this.activeCanvas - 1;
       this.animate1In();
@@ -206,7 +214,19 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  public redirectRestaurante() {
+    window.location.href = `http://181.50.100.167:3010?id=${this.idRestarante}?id=${this.idPersona}`;
+  }
+
   public redirectProfile() {
     window.location.href = 'http://159.65.58.193:3000/profile';
+  }
+
+  public redirectReservas() {
+    window.location.href = 'http://159.65.58.193:3000/tinder';
+  }
+
+  public redirectBuscar() {
+    window.location.href = `http://181.50.100.167:4001/Principal/?id=${this.idPersona}?pass=1?ciudad=1`;
   }
 }

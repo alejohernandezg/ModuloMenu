@@ -6,7 +6,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 })
 export class UsuarioService {
   // private baseURL = 'http://181.50.100.167:7000/menu';
-  private baseURL = 'http://181.50.100.167:4000/validateSession?id=';
+  private baseURL = 'http://localhost:7000/';
 
   private httpHeaders: HttpHeaders;
   private parametros: HttpParams;
@@ -14,7 +14,16 @@ export class UsuarioService {
   constructor(private http: HttpClient) { }
 
   public getUsuarioConectado(id: number) {
-    const URL = this.baseURL + `${id}`;
+    const URL = this.baseURL + `validateSession?id=${id}`;
+    this.httpHeaders = new HttpHeaders()
+    .set('Accept', '*/*');
+    return this.http.get(
+      URL, { headers: this.httpHeaders }
+      ).toPromise();
+  }
+
+  public getUsuarioName(id: number){
+    const URL = this.baseURL + `getNameUser?id=${id}`;
     this.httpHeaders = new HttpHeaders()
     .set('Accept', '*/*');
     return this.http.get(

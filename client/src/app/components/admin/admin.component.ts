@@ -17,6 +17,7 @@ export class AdminComponent implements OnInit {
   private data;
   private idPersona = -1;
   private idRestaurante = -1;
+  public nombre;
 
   public listIngredientes: Ingrediente[];
   public listPlatosIngredientes: Ingrediente[];
@@ -67,10 +68,13 @@ export class AdminComponent implements OnInit {
       this.idRestaurante = this.data[0];
       this.idPersona = this.data[1];
 
-      this.usuarioService.getUsuarioConectado(this.idPersona).then( (data:any) => {
+      this.usuarioService.getUsuarioConectado(this.idPersona).then( (data: any) => {
         if (data.response == 1) {
           this.router.navigate([ '/error' ]);
         } else if (data.response == 2) {
+          this.usuarioService.getUsuarioName(this.idPersona).then( (info: any) => {
+            this.nombre = info.content.name;
+          });
           this.getIngredientes();
           this.getPlatos();
         }
