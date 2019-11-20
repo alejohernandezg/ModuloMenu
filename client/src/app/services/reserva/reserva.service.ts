@@ -7,7 +7,7 @@ import { Pedido } from '../Models/pedido';
 })
 export class ReservaService {
   // private baseURL = 'http://181.50.100.167:7000/menu';
-  private baseURL = 'http://localhost:7000/';
+  private baseURL = 'http://localhost:7000/menu';
 
   private httpHeaders: HttpHeaders;
   private parametros: HttpParams;
