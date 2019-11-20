@@ -52,11 +52,11 @@ VALUES (4, 1);
 INSERT  INTO Reservation(PK_idRes, FK_idUser, FK_idRestaurant, Comment)
 VALUES (1, 1, 1, 'Bien cocidos.');
 
-INSERT INTO Reservation_Plate (FK_idPlate, FK_idRes)
-VALUES (1, 1);
+INSERT INTO Reservation_Plate (FK_idPlate, FK_idRes, ingredients)
+VALUES (1, 1, '[1, 2, 3]');
 
-INSERT INTO Reservation_Plate (FK_idPlate, FK_idRes)
-VALUES (2, 1);
+INSERT INTO Reservation_Plate (FK_idPlate, FK_idRes, ingredients)
+VALUES (2, 1, '[1, 2, 3]');
 
-INSERT INTO Reservation_Plate (FK_idPlate, FK_idRes)
-VALUES (3, 1);
+INSERT INTO Reservation_Plate (FK_idPlate, FK_idRes, ingredients)
+VALUES (3, 1, '[1, 2, 3]');
