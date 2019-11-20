@@ -6,6 +6,7 @@ import { Ingrediente } from '../../services/Models/ingrediente';
 import { PlatoService } from '../../services/plato/plato.service';
 import { IngredienteService } from '../../services/ingrediente/ingrediente.service';
 import { ActivatedRoute } from '@angular/router';
+import { ReservaService } from '../../services/reserva/reserva.service';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +15,12 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
+  private data;
   private idRestarante = -1;
+  private idPersona = -1;
+  private idReserva = -1;
+  public siguiente = 0;
+  public total = 0;
 
   public transitionController1 = new TransitionController();
   public transitionController2 = new TransitionController(false);
@@ -41,12 +47,21 @@ export class HomeComponent implements OnInit {
 
   constructor(private servicioPlato: PlatoService,
               private servicioIngrediente: IngredienteService,
+              private servicioReserva: ReservaService,
               private activateRoute: ActivatedRoute,
               public modalService: SuiModalService) { }
 
   ngOnInit() {
     this.activateRoute.params.subscribe( params => {
-      this.idRestarante = params[ 'info' ];
+      this.data = params[ 'info' ].split('-');
+      this.idRestarante = this.data[0];
+      this.idPersona = this.data[1];
+      this.idReserva = this.data[2];
+
+      if ( this.idReserva != 0) {
+        this.siguiente = 1;
+      }
+
       console.log(this.idRestarante);
       this.servicioPlato.getPlatosById(this.idRestarante).then( (dataPlatos: Plato[]) => {
         this.listaPlatosTodas = dataPlatos;
@@ -55,23 +70,25 @@ export class HomeComponent implements OnInit {
   }
 
   public getPlatosByTime(id: number) {
-    console.log(this.listaPlatosTodas);
     this.listaPlatos = this.listaPlatosTodas.filter(x => x.fk_idtypeplate === id);
   }
 
   public agregarPlatoOrden(idLista: number, idPlato: number) {
     this.servicioIngrediente.getIngredienteByIdPlato(idPlato).then( ( data: Ingrediente[] ) => {
       this.tempPedido.push( new Pedido(this.listaPlatos[idLista], data, ''));
+      this.total += this.listaPlatos[idLista].amount;
       this.contPedidos = this.contPedidos + 1;
     });
   }
 
   public guardarInfoPlato(plato: Plato, listaTempIngrediente: Ingrediente[]) {
     this.tempPedido.push( new Pedido(plato, listaTempIngrediente, ''));
+    this.total += plato.amount;
   }
 
   public eliminarPedido(id: number) {
-    this.tempPedido.splice(id, 1);
+    const borrado = this.tempPedido.splice(id, 1);
+    this.total -= borrado[0].infoPlato.amount;
     this.contPedidos = this.contPedidos - 1;
   }
 
@@ -98,40 +115,40 @@ export class HomeComponent implements OnInit {
   public guardarPlatoAvanzado(cmntro: string) {
     this.tempPedido.push( new Pedido(this.activoPlato, this.listaIngredientes, cmntro));
     this.contPedidos = this.contPedidos + 1;
+    this.total += this.activoPlato.amount;
     this.show = false;
   }
 
   public guardarPlatoAvanzado1(cmntro: string) {
     this.tempPedido[this.actualIndexPedido] = new Pedido(this.actualPedido.infoPlato, this.listaIngredientes, cmntro);
-    console.log(this.tempPedido);
     this.actualIndexPedido = -1;
     this.actualPedido = null;
     this.show1 = false;
   }
 
-  public animate1In(transitionName: string = 'scale') {
+  public finalizar() {
+    this.servicioReserva.addPlatesToReservation(this.idReserva, this.tempPedido).then( (data: any) => {});
+  }
 
+  public animate1In(transitionName: string = 'scale') {
     this.transitionController1.animate(
         new Transition(transitionName, 500, TransitionDirection.In, () => {})
     );
   }
 
   public animate1Out(transitionName: string = 'scale') {
-
     this.transitionController1.animate(
         new Transition(transitionName, 500, TransitionDirection.Out, () => {})
     );
   }
 
   public animate2In(transitionName: string = 'scale') {
-
     this.transitionController2.animate(
       new Transition(transitionName, 500, TransitionDirection.In, () => {})
     );
   }
 
   public animate2Out(transitionName: string = 'scale') {
-
     this.transitionController2.animate(
       new Transition(transitionName, 500, TransitionDirection.Out, () => {})
     );

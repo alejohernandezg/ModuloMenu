@@ -30,7 +30,7 @@
                             <div class="content">
                                 <div class="header">{{ plato.platename }}</div>
                             </div>
-                            <div class="ui buttons">
+                            <div class="ui buttons" *ngIf="siguiente != 0">
                                 <button (click)="agregarPlatoOrden(i, plato.pk_idplate)" class="ui vertical animated button attached positive " tabindex="0">
                                     <div class="hidden content">Comprar</div>
                                     <div class="visible content">
@@ -44,10 +44,16 @@
                                     </div>
                                 </button>
                             </div>
+                            <button *ngIf="siguiente == 0" (click)="abrirModal(1,plato)" class="ui vertical animated button attached" tabindex="0">
+                                <div class="hidden content">Info</div>
+                                <div class="visible content">
+                                    <i class="edit icon"></i>
+                                </div>
+                            </button>
                         </div>
                     </div>
 
-                    <div class="ui labeled button fluid" tabindex="0" style="margin-top:1rem;margin-bottom: 2rem;">
+                    <div *ngIf="siguiente != 0 && contPedidos != 0" class="ui labeled button fluid" tabindex="0" style="margin-top:1rem;margin-bottom: 2rem;">
                         <button class="ui positive button fluid" (click)="adelante(3)">
                             <i class="shop icon"></i> Comprar
                         </button>
@@ -55,6 +61,7 @@
                           {{ contPedidos }}
                         </a>
                     </div>
+                    <button *ngIf="siguiente == 0" class="fluid ui button" style="margin-top:1rem;margin-bottom: 2rem;">Ir a Reservas</button>
                 </div>
             </div>
             <div class="centrar" [suiTransition]="transitionController3">
@@ -79,7 +86,10 @@
                             </div>
                         </div>
                     </div>
-                    <button class="fluid ui button">Ir a Reservas</button>
+                    <div class="ui labeled button fluid" tabindex="0">
+                        <button class="ui button fluid" (click)="finalizar()">Terminar Reserva</button>
+                        <a class="ui basic left pointing label">${{total}}</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -123,7 +133,7 @@
     </div>
     <div class="actions">
         <button class="ui red button" (click)="show = false">Cancel</button>
-        <button class="ui green button" (click)="guardarPlatoAvanzado(comentarioPlatoAvanzado.value)" autofocus>Guardar</button>
+        <button *ngIf="siguiente != 0" class="ui green button" (click)="guardarPlatoAvanzado(comentarioPlatoAvanzado.value)" autofocus>Guardar</button>
     </div>
 </sui-modal>
 
