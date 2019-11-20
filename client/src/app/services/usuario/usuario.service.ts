@@ -5,8 +5,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
   providedIn: 'root'
 })
 export class UsuarioService {
-  // private baseURL = 'http://181.50.100.167:7000/menu';
-  private baseURL = 'http://localhost:7000/menu';
+  private baseURL = 'http://181.50.100.167:4000/';
 
   private httpHeaders: HttpHeaders;
   private parametros: HttpParams;

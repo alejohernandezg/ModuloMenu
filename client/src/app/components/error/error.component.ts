@@ -12,4 +12,8 @@ export class ErrorComponent implements OnInit {
   ngOnInit() {
   }
 
+  public redireccionar() {
+    window.location.href = 'http://159.65.58.193:3000/tinder';
+  }
+
 }
