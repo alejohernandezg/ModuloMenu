@@ -5,6 +5,8 @@ import { Ingrediente } from '../../services/Models/ingrediente';
 import { Plato } from '../../services/Models/plato';
 import { SuiModalService } from 'ng2-semantic-ui';
 import { element } from 'protractor';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UsuarioService } from '../../services/usuario/usuario.service';
 
 @Component({
   selector: 'app-admin',
@@ -12,6 +14,9 @@ import { element } from 'protractor';
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
+  private data;
+  private idPersona = -1;
+  private idRestaurante = -1;
 
   public listIngredientes: Ingrediente[];
   public listPlatosIngredientes: Ingrediente[];
@@ -50,26 +55,42 @@ export class AdminComponent implements OnInit {
 
   constructor(private ingredienteService: IngredienteService,
               private platoService: PlatoService,
+              private activateRoute: ActivatedRoute,
+              private usuarioService: UsuarioService,
+              private router: Router,
               public modalService: SuiModalService) {
-    this.getIngredientes();
-    this.getPlatos();
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.activateRoute.params.subscribe( params => {
+      this.data = params[ 'info' ].split('-');
+      this.idRestaurante = this.data[0];
+      this.idPersona = this.data[1];
 
-  async getIngredientes() {
+      this.usuarioService.getUsuarioConectado(this.idPersona).then( (data:any) => {
+        if (data.response == 1) {
+          this.router.navigate([ '/error' ]);
+        } else if (data.response == 2) {
+          this.getIngredientes();
+          this.getPlatos();
+        }
+      });
+    });
+  }
+
+  public getIngredientes() {
     this.ingredienteService.getIngredientes().then( (tempIngredientes: Ingrediente[]) => {
       this.listIngredientes = tempIngredientes;
     });
   }
 
-  async getPlatos() {
-    this.platoService.getPlatos().then( (tempPlatos: Plato[]) => {
+  public getPlatos() {
+    this.platoService.getPlatosById(this.idRestaurante).then( (tempPlatos: Plato[]) => {
       this.listPlatos = tempPlatos;
+      if (tempPlatos.length == 0) {
+        this.router.navigate([ '/error' ]);
+      }
     });
-    /*this.ingredienteService.getIngredienteById(3).then( (data: any) => {
-      console.log(data);
-    });*/
   }
 
   public update() {
@@ -172,5 +193,9 @@ export class AdminComponent implements OnInit {
     } else {
       return true;
     }
+  }
+
+  public redirectProfile() {
+    window.location.href = 'http://159.65.58.193:3000/profile';
   }
 }

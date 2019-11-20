@@ -5,8 +5,9 @@ import { Plato } from '../../services/Models/plato';
 import { Ingrediente } from '../../services/Models/ingrediente';
 import { PlatoService } from '../../services/plato/plato.service';
 import { IngredienteService } from '../../services/ingrediente/ingrediente.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ReservaService } from '../../services/reserva/reserva.service';
+import { UsuarioService } from '../../services/usuario/usuario.service';
 
 @Component({
   selector: 'app-home',
@@ -21,6 +22,7 @@ export class HomeComponent implements OnInit {
   private idReserva = -1;
   public siguiente = 0;
   public total = 0;
+  public estaLogueado = 0;
 
   public transitionController1 = new TransitionController();
   public transitionController2 = new TransitionController(false);
@@ -48,7 +50,9 @@ export class HomeComponent implements OnInit {
   constructor(private servicioPlato: PlatoService,
               private servicioIngrediente: IngredienteService,
               private servicioReserva: ReservaService,
+              private servicioUsuario: UsuarioService,
               private activateRoute: ActivatedRoute,
+              private router: Router,
               public modalService: SuiModalService) { }
 
   ngOnInit() {
@@ -62,8 +66,19 @@ export class HomeComponent implements OnInit {
         this.siguiente = 1;
       }
 
+      this.servicioUsuario.getUsuarioConectado(this.idPersona).then((data:any) => {
+        if (data.response == 2) {
+          this.estaLogueado = 1;
+        } else {
+          this.estaLogueado = 0;
+        }
+      });
+
       console.log(this.idRestarante);
       this.servicioPlato.getPlatosById(this.idRestarante).then( (dataPlatos: Plato[]) => {
+        if (dataPlatos.length == 0) {
+          this.router.navigate([ '/error' ]);
+        }
         this.listaPlatosTodas = dataPlatos;
       });
     });
@@ -189,5 +204,9 @@ export class HomeComponent implements OnInit {
       this.activeCanvas = this.activeCanvas - 1;
       this.animate2In();
     }
+  }
+
+  public redirectProfile() {
+    window.location.href = 'http://159.65.58.193:3000/profile';
   }
 }
