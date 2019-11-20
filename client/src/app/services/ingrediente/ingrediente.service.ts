@@ -6,7 +6,8 @@ import { Ingrediente } from '../Models/ingrediente';
   providedIn: 'root'
 })
 export class IngredienteService {
-  private baseURL = 'http://181.50.100.167:7000/menu'; 
+  // private baseURL = 'http://181.50.100.167:7000/menu';
+  private baseURL = 'http://localhost:7000/';
 
   private httpHeaders: HttpHeaders;
   private parametros: HttpParams;

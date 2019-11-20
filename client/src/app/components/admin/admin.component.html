@@ -1,61 +1,83 @@
-<div class="admin">
-    <div class="ui vertical stripe segment " style="margin-top:2em">
-        <h1>Platos Fuertes</h1>
-    </div>
-
-    <div class="ui vertical stripe segment " style="margin-top:2em">
-        <div class="ui segments">
-            <div class="ui secondary segment">
-                <button (click)="abrirModal('' ,3)" class="ui positive basic button fluid">Agregar</button>
+<div class="inicio">
+    <header class="App-header">
+        <div class="Menu">
+            <img src="../../../assets/Revit Blanco sin fondo.png" class="App-logo" alt="logo" />
+            <div class="ui inverted segment">
+                <div class="ui inverted pointing secondary menu">
+                    <a class="item active">Administrador</a>
+                </div>
             </div>
-            <div class="ui segment">
-                <div class="ui three cards">
-                    <div class="card" *ngFor="let plato of listPlatos; let i = index">
-                        <div class="content">
-                            <div class="header">{{plato.platename}}</div>
-                            <div class="description">
-                                {{ plato.platedescription }}
+        </div>
+        <div class="UserInformation">
+            {{nombre}}
+        </div>
+        <div class="LogOut">
+            <button (click)="redirectProfile()" class="circular ui icon button">
+            <i class="icon log out"></i>
+          </button>
+        </div>
+
+    </header>
+    <div class="decorBar"></div>
+    <div class="admin">
+        <div class="ui vertical stripe segment " style="margin-top:2em">
+            <h1>Platos Fuertes</h1>
+        </div>
+
+        <div class="ui vertical stripe segment " style="margin-top:2em">
+            <div class="ui segments">
+                <div class="ui secondary segment">
+                    <button (click)="abrirModal('' ,3)" class="ui positive basic button fluid">Agregar</button>
+                </div>
+                <div class="ui segment">
+                    <div class="ui three cards">
+                        <div class="card" *ngFor="let plato of listPlatos; let i = index">
+                            <div class="content">
+                                <div class="header">{{plato.platename}}</div>
+                                <div class="description">
+                                    {{ plato.platedescription }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="extra content" *ngIf="plato.imageplate != null">
-                            <div class="center aligned author">
-                                <img class="ui tiny image" src="{{ plato.imageplate }}">
+                            <div class="extra content" *ngIf="plato.imageplate != null">
+                                <div class="center aligned author">
+                                    <img class="ui tiny image" src="{{ plato.imageplate }}">
+                                </div>
                             </div>
-                        </div>
-                        <div class="extra content">
-                            <div class="ui two buttons">
-                                <button (click)="abrirModal(plato.pk_idplate,2,i)" class="ui basic green button"><i class="edit icon"></i></button>
-                                <div class="ui basic red button"><i class="trash icon"></i></div>
+                            <div class="extra content">
+                                <div class="ui two buttons">
+                                    <button (click)="abrirModal(plato.pk_idplate,2,i)" class="ui basic green button"><i class="edit icon"></i></button>
+                                    <div class="ui basic red button"><i class="trash icon"></i></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="ui vertical stripe segment " style="margin-top:2em">
-        <h1>Ingredientes</h1>
-    </div>
+        <div class="ui vertical stripe segment " style="margin-top:2em">
+            <h1>Ingredientes</h1>
+        </div>
 
-    <div class="ui vertical stripe segment " style="margin-top:2em">
-        <div class="ui segments">
-            <div class="ui secondary segment">
-                <button (click)="abrirModal('' ,4)" class="ui positive basic button fluid">Agregar</button>
-            </div>
-            <div class="ui segment">
-                <div class="ui three cards">
-                    <div class="card" *ngFor="let ingrediente of listIngredientes; let i = index">
-                        <div class="content">
-                            <div class="header">{{ ingrediente.ingredientname }}</div>
-                            <div class="description">
-                                {{ ingrediente.description }}
+        <div class="ui vertical stripe segment " style="margin-top:2em">
+            <div class="ui segments">
+                <div class="ui secondary segment">
+                    <button (click)="abrirModal('' ,4)" class="ui positive basic button fluid">Agregar</button>
+                </div>
+                <div class="ui segment">
+                    <div class="ui three cards">
+                        <div class="card" *ngFor="let ingrediente of listIngredientes; let i = index">
+                            <div class="content">
+                                <div class="header">{{ ingrediente.ingredientname }}</div>
+                                <div class="description">
+                                    {{ ingrediente.description }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="extra content">
-                            <div class="ui two buttons">
-                                <button (click)="abrirModal(0, 1,i)" class="ui basic green button"><i class="edit icon"></i></button>
-                                <div class="ui basic red button"><i class="trash icon"></i></div>
+                            <div class="extra content">
+                                <div class="ui two buttons">
+                                    <button (click)="abrirModal(0, 1,i)" class="ui basic green button"><i class="edit icon"></i></button>
+                                    <div class="ui basic red button"><i class="trash icon"></i></div>
+                                </div>
                             </div>
                         </div>
                     </div>
