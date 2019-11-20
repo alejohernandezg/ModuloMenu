@@ -5,7 +5,8 @@ const pool = new Pool({
     host: '181.50.100.167', //'181.50.100.167'
     user: 'postgres',
     password: '1234',
-    database: 'postgres'
+    database: 'postgres',
+    port: '7002'
 });
 
 // GET CONTROLLERS --------------------
